@@ -1,4 +1,5 @@
 import path from "path";
+import fs from "fs";
 import { getCurrentDir, setCurrentDir } from "./fs/currentDir.js";
 
 const commands = {
@@ -8,9 +9,25 @@ const commands = {
 
     setCurrentDir(dir);
   },
+  cd(newPath) {
+    const { sep } = path;
+    let dir = getCurrentDir();
+
+    if (sep === "/" && newPath.includes("\\")) {
+      newPath = newPath.replace(/\\/g, sep);
+    } else if (sep === "\\" && newPath.includes("/")) {
+      newPath = newPath.replace(/\\/g, sep);
+    }
+
+    dir = path.resolve(dir, newPath);
+    fs.statSync(dir);
+
+    setCurrentDir(dir);
+  },
 };
 
-export const executeCommand = (key) => {
+export const executeCommand = (str) => {
+  const [key, ...args] = str.split(" ");
   const event = commands[key];
 
   if (!event) {
@@ -18,5 +35,9 @@ export const executeCommand = (key) => {
     return;
   }
 
-  event();
+  try {
+    event(...args);
+  } catch {
+    console.error("Operation failed");
+  }
 };
