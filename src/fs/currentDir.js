@@ -1,5 +1,11 @@
+let state = process.cwd();
+
+export const setCurrentDir = (newValue) => {
+  state = newValue;
+};
+
 export const getCurrentDir = () => {
-  return process.cwd();
+  return state;
 };
 
 export const printCurrentDir = () => {
