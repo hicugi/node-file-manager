@@ -1,4 +1,4 @@
-const getUsername = () => {
+export const getUsername = () => {
   let result = "Unknown User";
 
   for (const str of process.argv) {
@@ -9,9 +9,4 @@ const getUsername = () => {
   }
 
   return result;
-};
-
-export const greeting = () => {
-  const username = getUsername();
-  console.log(`Welcome to the File Manager, ${username}!`);
 };
